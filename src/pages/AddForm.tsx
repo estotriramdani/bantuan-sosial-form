@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
+import AddressChooser from '@/components/AddressChooser';
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
 const ALLOWED_FILE_EXTS = ['jpg', 'jpeg', 'png', 'bmp'];
@@ -138,6 +139,7 @@ const AddFormPage = () => {
                   </FormItem>
                 )}
               />
+              <AddressChooser />
               <Button type="submit">Simpan</Button>
             </form>
           </Form>
