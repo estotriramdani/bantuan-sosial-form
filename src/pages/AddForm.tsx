@@ -39,6 +39,19 @@ const formSchema = z.object({
     .min(16, { message: 'Nomor Kartu Keluarga minimal 16 digit' })
     .max(18, { message: 'Nomor Kartu Keluarga maksimal 18 digit' }),
   fotoKtp: imageValidation,
+  fotoKk: imageValidation,
+  umur: z.number().min(18, { message: 'Umur minimum 18' }),
+  jenisKelamin: z.enum(['Laki-laki', 'Perempuan']),
+  provinsi: z.string().min(3, { message: 'Provinsi wajib diisi' }),
+  kabupaten: z.string().min(3, { message: 'Kabupaten/Kota wajib diisi' }),
+  kecamatan: z.string().min(3, { message: 'Kecamatan wajib diisi' }),
+  kelurahan: z.string().min(3, { message: 'Kelurahan/Desa wajib diisi' }),
+  alamat: z.string().max(255, { message: 'Alamat maksimal 255 karakter' }),
+  rt: z.string().max(3, { message: 'RT maksimal 3 karakter. Contoh: 001, 01, atau 1.' }),
+  rw: z.string().max(3, { message: 'RW maksimal 3 karakter. Contoh: 001, 01, atau 1.' }),
+  penghasilanSebelumPandemi: z.number().min(1, { message: 'Wajib diisi' }),
+  penghasilanSetelahPandemi: z.number().min(1, { message: 'Wajib diisi' }),
+  alasan: z.string().min(1, { message: 'Wajib diisi' }),
 });
 
 const AddFormPage = () => {
