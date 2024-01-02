@@ -1,11 +1,10 @@
-import { Button } from '@/components/ui/button';
+import { ThemeProvider } from './components/theme-provider';
+import AddFormPage from './pages/AddForm';
 
 export default function Home() {
   return (
-    <main className="bg-red-500">
-      <div className="mx-auto w-full">
-        <Button>Click me</Button>
-      </div>
-    </main>
+    <ThemeProvider>
+      <AddFormPage />
+    </ThemeProvider>
   );
 }
