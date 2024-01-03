@@ -14,6 +14,7 @@ interface IAppContext {
   regencies?: IRegency[];
   districts?: IDistrict[];
   villages?: IVillage[];
+  isLoadingAddresses?: boolean;
 }
 
 const AppContext = createContext<IAppContext>({
@@ -32,26 +33,28 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const [district, setDistrict] = useState<IDistrict | null>(null);
   const [village, setVillage] = useState<IVillage | null>(null);
 
-  const { data: provinces } = useSWR<IProvince[]>(
+  const { data: provinces, isLoading: isLoadingProvinces } = useSWR<IProvince[]>(
     `${import.meta.env.VITE_APP_WILAYAH_API_URL}/provinces.json`,
     fetcher,
   );
 
-  const { data: regencies } = useSWR<IRegency[]>(
+  const { data: regencies, isLoading: isLoadingRegencies } = useSWR<IRegency[]>(
     `${import.meta.env.VITE_APP_WILAYAH_API_URL}/regencies/${province?.id}.json`,
     province?.id ? fetcher : null,
   );
 
-  const { data: districts } = useSWR<IDistrict[]>(
+  const { data: districts, isLoading: isLoadingDistricts } = useSWR<IDistrict[]>(
     `${import.meta.env.VITE_APP_WILAYAH_API_URL}/districts/${regency?.id}.json`,
     regency?.id ? fetcher : null,
   );
 
-  const { data: villages } = useSWR<IVillage[]>(
+  const { data: villages, isLoading: isLoadingVillages } = useSWR<IVillage[]>(
     `${import.meta.env.VITE_APP_WILAYAH_API_URL}/villages/${district?.id}.json`,
     district?.id ? fetcher : null,
   );
 
+  const isLoadingAddresses = isLoadingProvinces || isLoadingRegencies || isLoadingDistricts || isLoadingVillages;
+  
   const handleChangeAddress = (type: string, value: any) => {
     switch (type) {
       case 'province':
@@ -89,6 +92,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         regencies,
         districts,
         villages,
+        isLoadingAddresses
       }}
     >
       {children}

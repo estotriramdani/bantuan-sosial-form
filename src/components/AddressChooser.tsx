@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { ComboBox } from './combobox';
 import AppContext from '@/context/AppContext';
+import { Skeleton } from './ui/skeleton';
 
 const AddressChooser = () => {
   const ctx = useContext(AppContext);
@@ -74,6 +75,12 @@ const AddressChooser = () => {
             setValue={setVillageName}
             value={villageName}
           />
+        </div>
+      )}
+      {ctx.isLoadingAddresses && (
+        <div className="mb-3">
+          <Skeleton className="w-full h-5 mb-1" />
+          <Skeleton className="w-full h-10" />
         </div>
       )}
     </div>
