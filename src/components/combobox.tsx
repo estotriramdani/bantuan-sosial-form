@@ -11,7 +11,7 @@ import { useState } from 'react';
 interface Props {
   value: string;
   setValue: (value: string) => void;
-  data: any[];
+  data: { value: string; label: string }[];
   onSelect?: (value: string) => void;
 }
 
@@ -27,7 +27,7 @@ export const ComboBox: React.FC<Props> = ({ onSelect, setValue, value, data }) =
         </Button>
       </PopoverTrigger>
       <PopoverContent className="p-0">
-        <Command className='max-h-[200px] overflow-y-auto'>
+        <Command className="max-h-[200px] overflow-y-auto">
           <CommandInput onValueChange={(e) => console.log(e)} placeholder="Cari..." />
           <CommandEmpty>Tidak ditemukan.</CommandEmpty>
           <CommandGroup>
@@ -41,7 +41,12 @@ export const ComboBox: React.FC<Props> = ({ onSelect, setValue, value, data }) =
                   setOpen(false);
                 }}
               >
-                <Check className={cn('mr-2 h-4 w-4', value?.toLowerCase() === item.value?.toLowerCase() ? 'opacity-100' : 'opacity-0')} />
+                <Check
+                  className={cn(
+                    'mr-2 h-4 w-4',
+                    value?.toLowerCase() === item.value?.toLowerCase() ? 'opacity-100' : 'opacity-0',
+                  )}
+                />
                 {item.label}
               </CommandItem>
             ))}
