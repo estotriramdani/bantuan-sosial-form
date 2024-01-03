@@ -140,6 +140,7 @@ const AddFormPage = () => {
                       <Input
                         type="file"
                         onChange={(e) => {
+                          setPreviewKtp(null);
                           if (e.target.files?.[0]) {
                             field.onChange(e.target.files?.[0]);
                             const extension = e.target.files?.[0].name.split('.').pop()?.toLowerCase();
@@ -171,6 +172,7 @@ const AddFormPage = () => {
                       <Input
                         type="file"
                         onChange={(e) => {
+                          setPreviewKk(null);
                           if (e.target.files?.[0]) {
                             field.onChange(e.target.files?.[0]);
                             const extension = e.target.files?.[0].name.split('.').pop()?.toLowerCase();
