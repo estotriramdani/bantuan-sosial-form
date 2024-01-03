@@ -250,7 +250,7 @@ const AddFormPage = () => {
                         prefix="Rp"
                         defaultValue={0}
                         decimalsLimit={2}
-                        onValueChange={(value) => field.onChange(value)}
+                        onValueChange={(value) => field.onChange(+(value || '0'))}
                       />
                     </FormControl>
                     <FormMessage />
@@ -270,7 +270,7 @@ const AddFormPage = () => {
                         prefix="Rp"
                         defaultValue={0}
                         decimalsLimit={2}
-                        onValueChange={(value) => field.onChange(value)}
+                        onValueChange={(value) => field.onChange(+(value || '0'))}
                       />
                     </FormControl>
                     <FormMessage />
