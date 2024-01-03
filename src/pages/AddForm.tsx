@@ -80,7 +80,7 @@ const AddFormPage = () => {
 
   return (
     <main className="">
-      <div className="mx-auto w-full p-6 lg:w-[500px]">
+      <div className="w-full p-6 mx-auto md:w-3/4 lg:w-1/2">
         <div className="mb-3">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
