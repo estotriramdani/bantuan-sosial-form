@@ -16,6 +16,7 @@ import {
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
+import { Textarea } from '@/components/ui/textarea';
 import AddressChooser from '@/components/AddressChooser';
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
@@ -48,7 +49,7 @@ const formSchema = z.object({
   kabupaten: z.string().min(3, { message: 'Kabupaten/Kota wajib diisi' }),
   kecamatan: z.string().min(3, { message: 'Kecamatan wajib diisi' }),
   kelurahan: z.string().min(3, { message: 'Kelurahan/Desa wajib diisi' }),
-  alamat: z.string().max(255, { message: 'Alamat maksimal 255 karakter' }),
+  alamat: z.string().min(1, { message: 'Wajib' }).max(255, { message: 'Alamat maksimal 255 karakter' }),
   rt: z.string().max(3, { message: 'RT maksimal 3 karakter. Contoh: 001, 01, atau 1.' }),
   rw: z.string().max(3, { message: 'RW maksimal 3 karakter. Contoh: 001, 01, atau 1.' }),
   penghasilanSebelumPandemi: z.number().min(1, { message: 'Wajib diisi' }),
@@ -195,6 +196,45 @@ const AddFormPage = () => {
                 )}
               />
               <AddressChooser />
+              <FormField
+                control={form.control}
+                name="alamat"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Alamat</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="Alamat" className="resize-none" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="rt"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>RT</FormLabel>
+                    <FormControl>
+                      <Input type="number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="rw"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>RW</FormLabel>
+                    <FormControl>
+                      <Input type="number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <Button type="submit">Simpan</Button>
             </form>
           </Form>
