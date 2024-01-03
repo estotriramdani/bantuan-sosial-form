@@ -154,7 +154,7 @@ const AddFormPage = () => {
                       <img
                         src={previewKtp}
                         alt="Foto KTP"
-                        className="object-cover w-full rounded-md aspect-video"
+                        className="object-cover w-full rounded-md lg:w-1/2 aspect-video"
                       />
                     )}
                     <FormMessage />
@@ -186,7 +186,7 @@ const AddFormPage = () => {
                       <img
                         src={previewKk}
                         alt="Foto KTP"
-                        className="object-cover w-full rounded-md aspect-video"
+                        className="object-cover w-full rounded-md lg:w-1/2 aspect-video"
                       />
                     )}
                   </FormItem>
