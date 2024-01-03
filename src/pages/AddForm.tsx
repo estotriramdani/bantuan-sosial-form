@@ -1,12 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-
 import { ModeToggle } from '@/components/mode-toggle';
 import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
+  FormDescription,
   // FormDescription,
   FormField,
   FormItem,
@@ -14,10 +14,12 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
+import { CurrencyInput, Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
 import { Textarea } from '@/components/ui/textarea';
 import AddressChooser from '@/components/AddressChooser';
+import { ComboBox } from '@/components/combobox';
+import { useState } from 'react';
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
 const ALLOWED_FILE_EXTS = ['jpg', 'jpeg', 'png', 'bmp'];
@@ -54,11 +56,11 @@ const formSchema = z.object({
   rw: z.string().max(3, { message: 'RW maksimal 3 karakter. Contoh: 001, 01, atau 1.' }),
   penghasilanSebelumPandemi: z.number().min(1, { message: 'Wajib diisi' }),
   penghasilanSetelahPandemi: z.number().min(1, { message: 'Wajib diisi' }),
-  alasan: z.string().min(1, { message: 'Wajib diisi' }),
 });
 
 const AddFormPage = () => {
   const { toast } = useToast();
+  const [alasan, setAlasan] = useState('');
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -235,6 +237,69 @@ const AddFormPage = () => {
                   </FormItem>
                 )}
               />
+              <FormField
+                control={form.control}
+                name="penghasilanSebelumPandemi"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Penghasilan Sebelum Pandemi</FormLabel>
+                    <FormControl>
+                      <CurrencyInput
+                        id="penghasilanSebelumPandemi"
+                        name="penghasilanSebelumPandemi"
+                        prefix="Rp"
+                        defaultValue={0}
+                        decimalsLimit={2}
+                        onValueChange={(value) => field.onChange(value)}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="penghasilanSetelahPandemi"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Penghasilan Sebelum Pandemi</FormLabel>
+                    <FormControl>
+                      <CurrencyInput
+                        id="penghasilanSetelahPandemi"
+                        name="penghasilanSetelahPandemi"
+                        prefix="Rp"
+                        defaultValue={0}
+                        decimalsLimit={2}
+                        onValueChange={(value) => field.onChange(value)}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormItem>
+                <FormLabel className="text-sm font-medium">Alasan membutuhkan bantuan</FormLabel>
+                <FormDescription>Pilih salah satu atau tulis sendiri.</FormDescription>
+                <ComboBox
+                  data={[
+                    {
+                      value: 'Kehilangan pekerjaan',
+                      label: 'Kehilangan pekerjaan',
+                    },
+                    {
+                      value: 'Kepala keluarga terdampak atau korban Covid-19',
+                      label: 'Kepala keluarga terdampak atau korban Covid-19',
+                    },
+                    {
+                      value: 'Tergolong fakir/miskin semenjak sebelum Covid-19',
+                      label: 'Tergolong fakir/miskin semenjak sebelum Covid-19',
+                    },
+                  ]}
+                  setValue={setAlasan}
+                  value={alasan}
+                  allowCustomValue
+                />
+              </FormItem>
               <Button type="submit">Simpan</Button>
             </form>
           </Form>
