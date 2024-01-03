@@ -61,6 +61,8 @@ const formSchema = z.object({
 const AddFormPage = () => {
   const { toast } = useToast();
   const [alasan, setAlasan] = useState('');
+  const [previewKtp, setPreviewKtp] = useState<string | null>();
+  const [previewKk, setPreviewKk] = useState<string | null>();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -80,8 +82,13 @@ const AddFormPage = () => {
 
   return (
     <main className="">
-      <div className="w-full p-6 mx-auto md:w-3/4 lg:w-1/2">
-        <div className="mb-3">
+      <div className="w-full mx-auto md:w-3/4 lg:w-1/2">
+        <div className="p-6 shadow">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-2xl font-bold">Form Pengajuan Bantuan Sosial</h2>
+            <ModeToggle />
+          </div>
+
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <FormField
@@ -135,10 +142,21 @@ const AddFormPage = () => {
                         onChange={(e) => {
                           if (e.target.files?.[0]) {
                             field.onChange(e.target.files?.[0]);
+                            const extension = e.target.files?.[0].name.split('.').pop()?.toLowerCase();
+                            if (ALLOWED_FILE_EXTS.includes(extension || '')) {
+                              setPreviewKtp(URL.createObjectURL(e.target.files?.[0]));
+                            }
                           }
                         }}
                       />
                     </FormControl>
+                    {previewKtp && (
+                      <img
+                        src={previewKtp}
+                        alt="Foto KTP"
+                        className="object-cover w-full rounded-md aspect-video"
+                      />
+                    )}
                     <FormMessage />
                   </FormItem>
                 )}
@@ -155,11 +173,22 @@ const AddFormPage = () => {
                         onChange={(e) => {
                           if (e.target.files?.[0]) {
                             field.onChange(e.target.files?.[0]);
+                            const extension = e.target.files?.[0].name.split('.').pop()?.toLowerCase();
+                            if (ALLOWED_FILE_EXTS.includes(extension || '')) {
+                              setPreviewKk(URL.createObjectURL(e.target.files?.[0]));
+                            }
                           }
                         }}
                       />
                     </FormControl>
                     <FormMessage />
+                    {previewKk && (
+                      <img
+                        src={previewKk}
+                        alt="Foto KTP"
+                        className="object-cover w-full rounded-md aspect-video"
+                      />
+                    )}
                   </FormItem>
                 )}
               />
@@ -304,7 +333,6 @@ const AddFormPage = () => {
             </form>
           </Form>
         </div>
-        <ModeToggle />
       </div>
     </main>
   );
