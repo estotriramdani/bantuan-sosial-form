@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+import AppContext from '@/context/AppContext';
 import { ModeToggle } from '@/components/mode-toggle';
 import { Button } from '@/components/ui/button';
 import {
@@ -19,7 +20,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { Textarea } from '@/components/ui/textarea';
 import AddressChooser from '@/components/AddressChooser';
 import { ComboBox } from '@/components/combobox';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
 const ALLOWED_FILE_EXTS = ['jpg', 'jpeg', 'png', 'bmp'];
@@ -47,10 +48,6 @@ const formSchema = z.object({
   fotoKk: imageValidation,
   umur: z.number().min(18, { message: 'Umur minimum 18' }),
   jenisKelamin: z.enum(['Laki-laki', 'Perempuan']),
-  provinsi: z.string().min(3, { message: 'Provinsi wajib diisi' }),
-  kabupaten: z.string().min(3, { message: 'Kabupaten/Kota wajib diisi' }),
-  kecamatan: z.string().min(3, { message: 'Kecamatan wajib diisi' }),
-  kelurahan: z.string().min(3, { message: 'Kelurahan/Desa wajib diisi' }),
   alamat: z.string().min(1, { message: 'Wajib' }).max(255, { message: 'Alamat maksimal 255 karakter' }),
   rt: z.string().max(3, { message: 'RT maksimal 3 karakter. Contoh: 001, 01, atau 1.' }),
   rw: z.string().max(3, { message: 'RW maksimal 3 karakter. Contoh: 001, 01, atau 1.' }),
@@ -60,6 +57,7 @@ const formSchema = z.object({
 
 const AddFormPage = () => {
   const { toast } = useToast();
+  const ctx = useContext(AppContext);
   const [alasan, setAlasan] = useState('');
   const [previewKtp, setPreviewKtp] = useState<string | null>();
   const [previewKk, setPreviewKk] = useState<string | null>();
@@ -71,13 +69,27 @@ const AddFormPage = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values.fotoKtp);
-    toast({
-      title: 'Account created.',
-      description: JSON.stringify(values),
-      variant: 'success',
-    });
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      if (!ctx.province || !ctx.regency || !ctx.district || !ctx.village) {
+        throw Error('Mohon lengkapi alamat');
+      }
+      if (!alasan) {
+        throw Error('Mohon pilih alasan');
+      }
+      toast({
+        title: 'Account created.',
+        description: JSON.stringify(values),
+        variant: 'success',
+      });
+    } catch (error: unknown) {
+      const err = error as Error;
+      toast({
+        title: 'Data tidak valid',
+        description: err.message,
+        variant: 'destructive',
+      });
+    }
   }
 
   return (
@@ -155,7 +167,7 @@ const AddFormPage = () => {
                       <img
                         src={previewKtp}
                         alt="Foto KTP"
-                        className="object-cover w-full rounded-md lg:w-1/2 aspect-video"
+                        className="object-cover w-full rounded-md aspect-video lg:w-1/2"
                       />
                     )}
                     <FormMessage />
@@ -188,7 +200,7 @@ const AddFormPage = () => {
                       <img
                         src={previewKk}
                         alt="Foto KTP"
-                        className="object-cover w-full rounded-md lg:w-1/2 aspect-video"
+                        className="object-cover w-full rounded-md aspect-video lg:w-1/2"
                       />
                     )}
                   </FormItem>
@@ -201,7 +213,11 @@ const AddFormPage = () => {
                   <FormItem>
                     <FormLabel>Umur</FormLabel>
                     <FormControl>
-                      <Input type="number" {...field} />
+                      <Input
+                        type="number"
+                        {...field}
+                        onChange={(e) => form.setValue('umur', e.target.valueAsNumber)}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
