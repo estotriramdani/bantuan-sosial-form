@@ -22,6 +22,7 @@ import AddressChooser from '@/components/AddressChooser';
 import { ComboBox } from '@/components/combobox';
 import { useContext, useState } from 'react';
 import { ALLOWED_FILE_EXTS, formSchema } from '@/data';
+import { saveSubmissions } from '@/lib/services';
 
 const AddFormPage = () => {
   const { toast } = useToast();
@@ -63,6 +64,16 @@ const AddFormPage = () => {
         description: 'Form berhasil dikirim',
         variant: 'success',
       });
+    await saveSubmissions({
+        ...values,
+        alasan,
+        provinsi: ctx.province.name,
+        kabupaten: ctx.regency.name,
+        kecamatan: ctx.district.name,
+        kelurahan: ctx.village.name,
+        fotoKkString: previewKk || '',
+        fotoKtpString: previewKtp || '',
+      }) ;
       form.reset();
     } catch (error: unknown) {
       const err = error as Error;
