@@ -58,6 +58,7 @@ const formSchema = z.object({
 const AddFormPage = () => {
   const { toast } = useToast();
   const ctx = useContext(AppContext);
+  const [isLoading, setIsLoading] = useState(false);
   const [alasan, setAlasan] = useState('');
   const [previewKtp, setPreviewKtp] = useState<string | null>();
   const [previewKk, setPreviewKk] = useState<string | null>();
@@ -71,12 +72,25 @@ const AddFormPage = () => {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
+      setIsLoading(true);
       if (!ctx.province || !ctx.regency || !ctx.district || !ctx.village) {
         throw Error('Mohon lengkapi alamat');
       }
       if (!alasan) {
         throw Error('Mohon pilih alasan');
       }
+
+      // simulate network request
+      const requestTime = Math.random() * 1000 + Math.random() * 1000;
+
+      const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+      await delay(requestTime);
+
+      if (requestTime > 1500) {
+        throw new Error('Gagal mengirim isian form. Mohon coba kembali beberapa saat.');
+      }
+
       toast({
         title: 'Account created.',
         description: JSON.stringify(values),
@@ -85,10 +99,11 @@ const AddFormPage = () => {
     } catch (error: unknown) {
       const err = error as Error;
       toast({
-        title: 'Data tidak valid',
         description: err.message,
         variant: 'destructive',
       });
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -347,7 +362,9 @@ const AddFormPage = () => {
                   allowCustomValue
                 />
               </FormItem>
-              <Button type="submit">Simpan</Button>
+              <Button variant={isLoading ? 'loading' : 'default'} disabled={isLoading} type="submit">
+                Simpan
+              </Button>
             </form>
           </Form>
         </div>
