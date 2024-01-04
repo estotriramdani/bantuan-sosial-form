@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import RootPage from '@/pages/root';
 import AddFormPage from '@/pages/AddForm';
+import Submissions from '@/pages/Submissions';
 
 import './index.css';
 
@@ -23,7 +24,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/submissions',
-        element: <div>sumsb</div>,
+        element: <Submissions />,
       },
     ],
   },
