@@ -30,7 +30,7 @@ const Submissions = () => {
         </Link>
       </div>
       <Table>
-        <TableCaption>A list of your recent invoices.</TableCaption>
+        <TableCaption>Total data {submissions.length}</TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead>No</TableHead>

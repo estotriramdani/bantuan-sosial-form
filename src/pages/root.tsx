@@ -8,7 +8,7 @@ export default function RootPage() {
     <ThemeProvider>
       <AppContextProvider>
         <main>
-          <div className="w-full mx-auto md:w-3/4 lg:w-1/2">{<Outlet />}</div>
+          <div className="w-full mx-auto md:w-4/5 lg:w-3/4">{<Outlet />}</div>
         </main>
       </AppContextProvider>
       <Toaster />
