@@ -13,6 +13,7 @@ import {
 import { SubmissionParams } from '@/types';
 import { useState } from 'react';
 import DetailData from '@/components/DetailData';
+import { ModeToggle } from '@/components/mode-toggle';
 
 const Submissions = () => {
   const submissions = useSubmissions();
@@ -24,6 +25,10 @@ const Submissions = () => {
 
   return (
     <div className="p-6">
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-2xl font-bold">Daftar Pengajuan Bantuan Sosial</h2>
+        <ModeToggle />
+      </div>
       <div className="mb-3">
         <Link to="/" className={buttonVariants({ variant: 'default', size: 'sm' })}>
           Tambah data
