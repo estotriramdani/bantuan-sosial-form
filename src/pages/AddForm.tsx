@@ -24,6 +24,7 @@ import { useContext, useState } from 'react';
 import { ALLOWED_FILE_EXTS, formSchema } from '@/data';
 import { saveSubmissions } from '@/lib/services';
 import { Link, useNavigate } from 'react-router-dom';
+import { toBase64 } from '@/lib/utils';
 
 const AddFormPage = () => {
   const { toast } = useToast();
@@ -67,15 +68,19 @@ const AddFormPage = () => {
         description: 'Form berhasil dikirim',
         variant: 'success',
       });
+
+      const fotoKtpString = await toBase64(values.fotoKtp as File);
+      const fotoKkString = await toBase64(values.fotoKk as File);
       await saveSubmissions({
         ...values,
+        id: Math.random().toString(36).substr(2, 9),
         alasan,
         provinsi: ctx.province.name,
         kabupaten: ctx.regency.name,
         kecamatan: ctx.district.name,
         kelurahan: ctx.village.name,
-        fotoKkString: previewKk || '',
-        fotoKtpString: previewKtp || '',
+        fotoKtpString: fotoKtpString as string,
+        fotoKkString: fotoKkString as string,
       });
       form.reset();
       navigate('/submissions');
@@ -92,7 +97,7 @@ const AddFormPage = () => {
 
   return (
     <div className="p-6 shadow">
-      <div className="mb-3 flex items-center justify-between">
+      <div className="flex items-center justify-between mb-3">
         <h2 className="text-2xl font-bold">Form Pengajuan Bantuan Sosial</h2>
         <ModeToggle />
       </div>
@@ -167,7 +172,7 @@ const AddFormPage = () => {
                   <img
                     src={previewKtp}
                     alt="Foto KTP"
-                    className="aspect-video w-full rounded-md object-cover lg:w-1/2"
+                    className="object-cover w-full rounded-md aspect-video lg:w-1/2"
                   />
                 )}
                 <FormMessage />
@@ -200,7 +205,7 @@ const AddFormPage = () => {
                   <img
                     src={previewKk}
                     alt="Foto KTP"
-                    className="aspect-video w-full rounded-md object-cover lg:w-1/2"
+                    className="object-cover w-full rounded-md aspect-video lg:w-1/2"
                   />
                 )}
               </FormItem>

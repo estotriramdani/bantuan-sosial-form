@@ -25,6 +25,7 @@ export interface IVillage {
 }
 
 export interface SubmissionParams extends z.infer<typeof formSchema> {
+	id: string;
   alasan: string;
   provinsi: string;
   kabupaten: string;
