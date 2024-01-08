@@ -1,30 +1,29 @@
-# React + TypeScript + Vite
+## Run this project locally
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### Development
 
-Currently, two official plugins are available:
+1. Clone this repository
+2. Install dependencies with `yarn`
+3. Run the project `yarn dev`
+4. Open up your browser and access http://localhost:5173
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Production
 
-## Expanding the ESLint configuration
+1. Clone this repository
+2. Install dependencies with `yarn`
+3. Run the project `yarn build`
+4. You can now deploy the `dist` folder to your server
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Available Routes
 
-- Configure the top-level `parserOptions` property like this:
+### `/`
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+This routes contains form to create.
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+### `/submissions`
+
+This routes contains list of submissions from the form in `/`.
+
+## About Storage
+
+You will notice that the submissions will be available in `/submissions`. In this project, we are using browser `localStorage` to store submitted form. For images, it converted to `base64` string before being stored to `localStorage`. To retrieve the data, we are using React hooks to handle that located at `/src/hooks/useSubmissions.ts`
